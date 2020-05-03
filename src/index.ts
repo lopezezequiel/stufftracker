@@ -3,15 +3,20 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+
+//patch express to support promise rejections
+require('express-async-errors');
+
 import ProductCategoryController from './controllers/ProductCategoryController';
 import mongoose from 'mongoose';
 import DatabaseConfig from './configs/DatabaseConfig';
+import GlobalExceptionHandlerMiddleware from './middlewares/HttpExceptionHandlerMiddleware';
+import MongooseExceptionHandlerMiddleware from './middlewares/MongooseExceptionHandlerMiddleware';
+import HttpExceptionHandlerMiddleware from './middlewares/HttpExceptionHandlerMiddleware';
 
 
 const app: express.Application = express();
 
-app.use(express.json())
-app.use('/api/product-categories', ProductCategoryController());
 
 mongoose.connect(DatabaseConfig.uri, {
     useNewUrlParser: true,
@@ -24,6 +29,11 @@ db.once('open', function() {
   // we're connected!
 });
 
+
+app.use(express.json())
+app.use('/api/product-categories', ProductCategoryController());
+app.use(MongooseExceptionHandlerMiddleware);
+app.use(HttpExceptionHandlerMiddleware);
 
 
 app.listen(3000, function () {
