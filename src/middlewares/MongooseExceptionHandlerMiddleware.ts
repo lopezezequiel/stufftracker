@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import Http404NotFoundException from "../exceptions/Http404NotFoundException";
 import Http400BadRequestException from "../exceptions/Http404BadRequestException";
 import Http500InternalServerErrorException from "../exceptions/Http500InternalServerErrorException";
@@ -7,8 +7,6 @@ import Http409ConflictException from "../exceptions/Http409ConflictException";
 import Http422UnprocessableEntity from "../exceptions/Http422UnprocessableEntityException";
 
 const MongooseExceptionHandlerMiddleware = (error: any, request: Request, response: Response, next: NextFunction) => {
-
-    console.log(error);
 
     switch(true) {
  
@@ -31,13 +29,15 @@ const MongooseExceptionHandlerMiddleware = (error: any, request: Request, respon
         
         //Mongo errors
         //duplicated keys
-        case error instanceof mongo.MongoError && error.code === 11000: 
+        case error instanceof mongoose.mongo.MongoError && error.code === 11000:
             return next(new Http409ConflictException('DuplicatedKeys', error.errmsg));
  
         //default mongo error
-        case error instanceof mongo.MongoError: 
+        case error instanceof mongoose.mongo.MongoError:
             return next(new Http500InternalServerErrorException(null, error.errmsg));
     }
+
+    next();
 }
 
 export default MongooseExceptionHandlerMiddleware;
