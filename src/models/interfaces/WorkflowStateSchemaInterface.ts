@@ -5,14 +5,17 @@ import MongooseDeletePluginConfig from "../../configs/MongooseDeletePluginConfig
 import MongooseSchemaConfig from "../../configs/MongooseSchemaConfig";
 
 export const WorkflowStateSchema: Schema = new Schema({
+    id: {
+        type: Schema.Types.ObjectId, //generar esto en el mapper
+        require: true
+    },
     name: {
         type: String,
         required: true
     }
-}, MongooseSchemaConfig);
+});
 
-WorkflowStateSchema.plugin(mongoose_delete, MongooseDeletePluginConfig);
-
-export interface WorkflowStateSchemaInterface extends GenericSchemaInterface {
+export interface WorkflowStateSchemaInterface {
+    id: Schema.Types.ObjectId,
     name: string
 }

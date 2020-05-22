@@ -13,7 +13,7 @@ import DatabaseConfig from './configs/DatabaseConfig';
 import GlobalExceptionHandlerMiddleware from './middlewares/HttpExceptionHandlerMiddleware';
 import MongooseExceptionHandlerMiddleware from './middlewares/MongooseExceptionHandlerMiddleware';
 import HttpExceptionHandlerMiddleware from './middlewares/HttpExceptionHandlerMiddleware';
-import WorkflowStateController from './controllers/WorkflowStateController';
+import WorkflowTemplateController from './controllers/WorkflowTemplateController';
 
 
 const app: express.Application = express();
@@ -33,7 +33,7 @@ db.once('open', function() {
 
 app.use(express.json())
 app.use('/api/product-categories', ProductCategoryController());
-app.use('/api/workflow-state', WorkflowStateController());
+app.use('/api/workflow-template', WorkflowTemplateController());
 app.use(MongooseExceptionHandlerMiddleware);
 app.use(HttpExceptionHandlerMiddleware);
 

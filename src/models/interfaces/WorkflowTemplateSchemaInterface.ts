@@ -1,34 +1,27 @@
 import { Schema } from "mongoose";
 import { GenericSchemaInterface } from "./GenericSchemaInterface";
-import { WorkflowStateSchemaInterface } from "./WorkflowStateSchemaInterface";
-import { WorkflowTransitionSchemaInterface } from "./WorkflowTransitionSchemaInterface";
+import { WorkflowStateSchemaInterface, WorkflowStateSchema } from "./WorkflowStateSchemaInterface";
+import { WorkflowTransitionSchemaInterface, WorkflowTransitionSchema } from "./WorkflowTransitionSchemaInterface";
+import MongooseSchemaConfig from "../../configs/MongooseSchemaConfig";
+import mongoose_delete from "mongoose-delete";
+import MongooseDeletePluginConfig from "../../configs/MongooseDeletePluginConfig";
 
 export const WorkflowTemplateSchema: Schema = new Schema({
     name: {
         type: String,
         required: true
     },
-    initialState: {
-        type: Schema.Types.ObjectId,
-        ref: "WorkflowState"
-    },
-    states: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "WorkflowState"
-        }
-    ],
-    transitions: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "WorkflowTransition"
-        }
-    ]
-});
+    initialState: WorkflowStateSchema,
+    states: [WorkflowStateSchema],
+    transitions: [WorkflowTransitionSchema]
+}, MongooseSchemaConfig);
+
+//add soft-delete
+WorkflowTemplateSchema.plugin(mongoose_delete, MongooseDeletePluginConfig);
 
 export interface WorkflowTemplateSchemaInterface extends GenericSchemaInterface {
     name: string,
-    initialState: WorkflowStateSchemaInterface['_id'],
-    states: [WorkflowStateSchemaInterface['_id']],
-    transitions: [WorkflowTransitionSchemaInterface['_id']]
+    initialState: WorkflowStateSchemaInterface['id'], //valido que este exista en states, ver si poner el id
+    states: WorkflowStateSchemaInterface[],
+    transitions: WorkflowTransitionSchemaInterface[]
 }
