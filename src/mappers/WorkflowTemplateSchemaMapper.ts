@@ -5,7 +5,8 @@ import WorkflowTemplateInterface from "../services/interfaces/WorkflowTemplateIn
 
 const fromWorkflowTemplateCreate = (workflowTemplate: WorkflowTemplateCreateInterface) => {
     return {
-        name: workflowTemplate.name
+        name: workflowTemplate.name,
+        states: workflowTemplate.states  //TODO ver si no definimos un mapper para los WorkflowState
     }
 }
 

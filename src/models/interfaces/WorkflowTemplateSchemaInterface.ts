@@ -11,7 +11,6 @@ export const WorkflowTemplateSchema: Schema = new Schema({
         type: String,
         required: true
     },
-    initialState: WorkflowStateSchema,
     states: [WorkflowStateSchema],
     transitions: [WorkflowTransitionSchema]
 }, MongooseSchemaConfig);
@@ -21,7 +20,6 @@ WorkflowTemplateSchema.plugin(mongoose_delete, MongooseDeletePluginConfig);
 
 export interface WorkflowTemplateSchemaInterface extends GenericSchemaInterface {
     name: string,
-    initialState: WorkflowStateSchemaInterface['id'], //valido que este exista en states, ver si poner el id
     states: WorkflowStateSchemaInterface[],
     transitions: WorkflowTransitionSchemaInterface[]
 }

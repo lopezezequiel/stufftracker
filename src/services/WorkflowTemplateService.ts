@@ -5,14 +5,13 @@ import WorkflowTemplateModel from "../models/WorkflowTemplateModel";
 import WorkflowTemplateSchemaMapper from "../mappers/WorkflowTemplateSchemaMapper";
 import WorkflowTemplateUpdateInterface from "./interfaces/WorkflowTemplateUpdateInterface";
 
-//TODO map objects
 const create = async (input: WorkflowTemplateCreateInterface):Promise<WorkflowTemplateInterface> => {
+    //TODO cuando se agregue el validator validar tener un solo estado inicial?
     const workflowTemplate: WorkflowTemplateSchemaInterface = 
-        await WorkflowTemplateModel.create(WorkflowTemplateSchemaMapper.fromWorkflowTemplateCreate(input));
+        await WorkflowTemplateModel.create(WorkflowTemplateSchemaMapper.fromWorkflowTemplateCreate(input));    
     return WorkflowTemplateSchemaMapper.toWorkflowTemplate(workflowTemplate);
 }
 
-//return null or throw exception?
 const findById = async (id: WorkflowTemplateSchemaInterface['_id']):Promise<WorkflowTemplateInterface> => {
     const workflowTemplate: WorkflowTemplateSchemaInterface = await WorkflowTemplateModel.findById(id).orFail().exec();
     return WorkflowTemplateSchemaMapper.toWorkflowTemplate(workflowTemplate);
