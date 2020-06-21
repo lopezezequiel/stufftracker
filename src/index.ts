@@ -14,6 +14,7 @@ import GlobalExceptionHandlerMiddleware from './middlewares/HttpExceptionHandler
 import MongooseExceptionHandlerMiddleware from './middlewares/MongooseExceptionHandlerMiddleware';
 import HttpExceptionHandlerMiddleware from './middlewares/HttpExceptionHandlerMiddleware';
 import WorkflowTemplateController from './controllers/WorkflowTemplateController';
+import ProductTemplateController from './controllers/ProductTemplateController';
 
 
 const app: express.Application = express();
@@ -34,6 +35,7 @@ db.once('open', function() {
 app.use(express.json())
 app.use('/api/product-categories', ProductCategoryController());
 app.use('/api/workflow-template', WorkflowTemplateController());
+app.use('/api/product-template', ProductTemplateController());
 app.use(MongooseExceptionHandlerMiddleware);
 app.use(HttpExceptionHandlerMiddleware);
 
